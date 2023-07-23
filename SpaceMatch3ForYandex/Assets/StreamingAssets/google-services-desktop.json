@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1006792962511",
+    "project_id": "space-match-feeaa",
+    "storage_bucket": "space-match-feeaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006792962511:android:539288fcad42a42f4462ba",
+        "android_client_info": {
+          "package_name": "com.ArtUR.SpaceMatch3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006792962511-p10vnvksis36achth2ljbgtunhc73hld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaP748mwqoABgSf_8uGdYv0rsYKjcrXUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006792962511-p10vnvksis36achth2ljbgtunhc73hld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
