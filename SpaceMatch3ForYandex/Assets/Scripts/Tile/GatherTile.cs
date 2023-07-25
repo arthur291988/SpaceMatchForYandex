@@ -62,7 +62,7 @@ public class GatherTile : MonoBehaviour
     }
 
     public void setInitialCommand() {
-        MoveToBottomPosition = new Vector2(UnityEngine.Random.Range(CommonData.Instance.horisScreenSize/2 - 0.5f, CommonData.Instance.horisScreenSize/-2 + 0.5f),
+        MoveToBottomPosition = new Vector2(UnityEngine.Random.Range(CommonData.Instance.getXBorder(), -CommonData.Instance.getXBorder()),
             CommonData.Instance.vertScreenSize / -2 + UnityEngine.Random.Range(0.5f, 1.5f));
         isMovingToBottomOfScreen = true;
     }

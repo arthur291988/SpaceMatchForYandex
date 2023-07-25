@@ -209,9 +209,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: IAPManagerOfGame, Assembly-CSharp
-        m_MethodName: BuyNOAds
+      - m_Target: {fileID: 570343536}
+        m_TargetAssemblyTypeName: IAPManager, Assembly-CSharp
+        m_MethodName: buyNoAdsButtonFromMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rate
+  m_text: "\u041E\u0446\u0435\u043D\u0438\u0442\u044C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
   m_sharedMaterial: {fileID: 3963545186310786087, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 300
+  m_fontSize: 146.3
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 5.99$
+  m_text: "\u041A\u0443\u043F\u0438\u0442\u044C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
   m_sharedMaterial: {fileID: 3963545186310786087, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
@@ -479,7 +479,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 203.25
+  m_fontSize: 140
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1052,6 +1052,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 491055554}
   m_CullTransparentMesh: 1
+--- !u!1 &570343535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 570343537}
+  - component: {fileID: 570343536}
+  m_Layer: 0
+  m_Name: IAPManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &570343536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570343535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 785efc30e6731d04693c3b0b25ff9782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &570343537
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570343535}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 760.7144, y: 366.93256, z: -1.5194213}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &579439710
 GameObject:
   m_ObjectHideFlags: 0
@@ -1710,8 +1754,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1500, y: 1000}
+  m_AnchoredPosition: {x: 0, y: 87.219}
+  m_SizeDelta: {x: 1500, y: 1248.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &967043085
 MonoBehaviour:
@@ -1733,8 +1777,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You can rate my game if you like it or have any suggestions, that will
-    be huge contribution
+  m_text: "\u0415\u0441\u043B\u0438 \u0432\u0430\u043C \u043F\u043E\u043D\u0440\u0430\u0432\u0438\u043B\u0430\u0441\u044C
+    \u0438\u0433\u0440\u0430 \u0412\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u043F\u043E\u0441\u0442\u0430\u0432\u0438\u0442\u044C
+    5 \u0437\u0432\u0435\u0437\u0434 \u0438\u043B\u0438 \u043F\u0440\u0435\u0434\u043B\u043E\u0436\u0438\u0442\u044C
+    \u043B\u044E\u0431\u044B\u0435 \u0438\u0434\u0435\u0438 \u043F\u043E \u043D\u0435\u0439.
+    \u042D\u0442\u043E \u0431\u044B \u043C\u043D\u0435 \u043E\u0447\u0435\u043D\u044C
+    \u043F\u043E\u043C\u043E\u0433\u043B\u043E. "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
   m_sharedMaterial: {fileID: 3963545186310786087, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
@@ -1761,7 +1809,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 138.85
+  m_fontSize: 116.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3501,8 +3549,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -300, y: 250}
-  m_SizeDelta: {x: 1000, y: 260}
+  m_AnchoredPosition: {x: -300, y: 216.523}
+  m_SizeDelta: {x: 1000, y: 216.52}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1750815307
 MonoBehaviour:
@@ -3524,7 +3572,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Turn Off ADS
+  m_text: "\u041E\u0442\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0440\u0435\u043A\u043B\u0430\u043C\u0443"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
   m_sharedMaterial: {fileID: 3963545186310786087, guid: 8bf230348953ed449aa6159b0397e9ca, type: 2}
@@ -3551,7 +3599,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 117.25
+  m_fontSize: 90.2
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

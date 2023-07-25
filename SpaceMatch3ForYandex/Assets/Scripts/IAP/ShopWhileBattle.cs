@@ -23,10 +23,10 @@ public class ShopWhileBattle : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
-        if (!GameParams.getAdsBought()) StartCoroutine(setStorePrice());
-    }
+    //void Start()
+    //{
+    //    if (!GameParams.getAdsBought()) StartCoroutine(setStorePrice());
+    //}
 
     public void updateNoAdsSpecialUIAfterPurchase()
     {
@@ -48,14 +48,14 @@ public class ShopWhileBattle : MonoBehaviour
 
 
 
-    IEnumerator setStorePrice()
-    {
-        //while (!IAPManagerOfGame.instance.IsInitialized())
-        //{
-        //    yield return null;
-        //}
-        yield return null;
-        //priceOfNOAds.text = IAPManagerOfGame.instance.getProductPriceFromStore(IAPManagerOfGame.instance.NO_ADS_SPECIAL);
-        //OldPriceOfNOAds.text = IAPManagerOfGame.instance.getProductPriceFromStore(IAPManagerOfGame.instance.NO_ADS);
-    }
+    //IEnumerator setStorePrice()
+    //{
+    //    //while (!IAPManagerOfGame.instance.IsInitialized())
+    //    //{
+    //    //    yield return null;
+    //    //}
+    //    yield return null;
+    //    //priceOfNOAds.text = IAPManagerOfGame.instance.getProductPriceFromStore(IAPManagerOfGame.instance.NO_ADS_SPECIAL);
+    //    //OldPriceOfNOAds.text = IAPManagerOfGame.instance.getProductPriceFromStore(IAPManagerOfGame.instance.NO_ADS);
+    //}
 }

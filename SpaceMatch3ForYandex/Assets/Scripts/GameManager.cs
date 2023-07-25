@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
+using System.Runtime.InteropServices;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +17,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public List<GameObject> ObjectPulledList;
 
-    private float xStep;
+    private const float xStep = 2.2f;
+    private const int maxShipsOnOneLine = 5;
 
 
     private bool fightIsOn;
@@ -68,7 +70,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject noInternetPanel;
     //private bool adsTimerIsOn;
-    //private bool adsReadyToShow;
+    private bool adsReadyToShow;
 
     private const float adsTimer = 70;
 
@@ -76,7 +78,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        xStep = 2.2f;
         noShieldsMode = false;
     }
 
@@ -104,11 +105,36 @@ public class GameManager : MonoBehaviour
         //setTheTimer();
         GameParams.ResetAdsTimer();
         checkTheInternet();
+        GameParams.gameWin = false;
+    }
+
+
+    [DllImport("__Internal")]
+    private static extern void ShowAds();
+
+
+    //this is called from yandex plugin my.jslib after interstitial ad was shown
+    public void afterAdsShown()
+    {
+        if (!GameParams.getAdsBought())
+        {
+            if (UnityEngine.Random.Range(0, 4) == 3) ShopWhileBattle.instance.showLimitedOffer();
+        }
+    }
+
+
+    //DESCTOP FUNCTION
+    public float getScreenVerticalBorders() {
+        float Xborder = 0;
+        Xborder = xStep * (maxShipsOnOneLine/2 + 1);
+        return Xborder;
     }
 
     private void OnApplicationFocus(bool focus)
     {
         checkTheInternet();
+        GameParams.SetAdsTimer(60);
+
         //if (!Advertisement.isInitialized)
         //{
         //    AdsInitializer.Instance.InitializeAds();
@@ -196,7 +222,7 @@ public class GameManager : MonoBehaviour
 
                 if (totalShipsCount == 0) shipObject.transform.position = new Vector2(xStepLocal, yStepLocal);
                 //switch to second row of fleet
-                else if (totalShipsCount == 5)
+                else if (totalShipsCount == maxShipsOnOneLine)
                 {
                     yStepLocal = secondRowYValueEnemyFleet;
                     xStepLocal = 0;
@@ -374,14 +400,14 @@ public class GameManager : MonoBehaviour
 
                     //AnalyticMain.instance.LogEvent("ShieldsOffMessage");
                 }
-                //else if (adsReadyToShow)
-                //{
-                //    if (!GameParams.getAdsBought())
-                //    {
-                //        InterstitialAd.Instance.ShowAd();
-                //        adsReadyToShow = false;
-                //    }
-                //}
+                else if (adsReadyToShow)
+                {
+                    if (!GameParams.getAdsBought())
+                    {
+                        ShowAds();
+                        adsReadyToShow = false;
+                    }
+                }
 
             }
             else
@@ -406,8 +432,13 @@ public class GameManager : MonoBehaviour
         if (victory)
         {
             victoryButton.SetActive(true);
-            if (GameParams.currentLevel == GameParams.achievedLevel) GameParams.achievedLevel++;
-            SaveAndLoad.instance.saveGameData();
+            if (GameParams.currentLevel == GameParams.achievedLevel)
+            {
+                GameParams.achievedLevel++;
+                SaveAndLoad.instance.playerData.achievedLevel = GameParams.achievedLevel;
+            }
+            SaveAndLoad.instance.saveData();
+            GameParams.gameWin = true;
         }
         else
         {
@@ -488,11 +519,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!GameParams.getAdsBought()) {
+        if (!GameParams.getAdsBought())
+        {
             GameParams.AdsTimer(Time.deltaTime);
-            if (GameParams.getAdsTimer() >= adsTimer) {
+            if (GameParams.getAdsTimer() >= adsTimer)
+            {
                 GameParams.ResetAdsTimer();
-                //adsReadyToShow = true;
+                adsReadyToShow = true;
             }
             //Debug.Log(GameParams.getAdsTimer());
         }

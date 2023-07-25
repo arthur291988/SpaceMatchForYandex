@@ -16,12 +16,12 @@ public class Tile : MonoBehaviour
     public Transform _transform;
 
 
-    ///DESCTOP PROPERTY
-    //private Vector2 touchStartPos;
-    //private Vector2 touchDragPos;
-    //private float maxSwipeDistance = 0.9f;
-    //private float maxAxeDeviation = 0.4f;
-    //private bool swipeSessionStarted;
+    //DESCTOP PROPERTY
+    private Vector2 touchStartPos;
+    private Vector2 touchDragPos;
+    private float maxSwipeDistance = 0.4f;
+    private float maxAxeDeviation = 0.3f;
+    private bool swipeSessionStarted;
 
 
 
@@ -88,7 +88,7 @@ public class Tile : MonoBehaviour
 
 
         ///DESCTOP PROPERTY
-        //swipeSessionStarted = false;
+        swipeSessionStarted = false;
 
 
 
@@ -150,12 +150,7 @@ public class Tile : MonoBehaviour
 
 
 
-    ///DESCTOP PROPERTY
-    //private void OnMouseDown() //6
-    //{
-    //    touchStartPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-    //    swipeSessionStarted = true;
-    //}
+   
 
     public void trembelAnimFunc() {
         StartCoroutine(trembleAnim());
@@ -189,61 +184,66 @@ public class Tile : MonoBehaviour
     //    animator.SetBool("fallAnim", false);
     //}
 
+    //DESCTOP PROPERTY
+    private void OnMouseDown() //6
+    {
+        touchStartPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+        swipeSessionStarted = true;
+    }
+
+    //DESCTOP PROPERTY
+    private void OnMouseDrag()
+    {
+        if (!GridManager.Instance.isSwiping && swipeSessionStarted && !GridManager.Instance.isSwipingBack && !GridManager.Instance.tilesAreMoving
+            && !GameManager.instance.getFightIsOn() && !GridManager.Instance.GatherTilesAreMovingToShips && !GridManager.Instance.shipsPrepareToAttack)
+        {
+            touchDragPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+            if ((touchDragPos - touchStartPos).magnitude > maxSwipeDistance)
+            {
+                if (Mathf.Abs(touchDragPos.y - touchStartPos.y) < maxAxeDeviation)
+                {
+                    if (touchDragPos.x < touchStartPos.x)
+                    {
+                        //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x - GridManager.Instance.Distance),Position.y), Position);
+
+                        if (column - 1 >= 0) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column - 1, row]);
+                        else StartCoroutine(trembleAnim());
+
+                    }
+                    if (touchDragPos.x > touchStartPos.x)
+                    {
+                        //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x + GridManager.Instance.Distance), Position.y), Position);
+
+                        if (column + 1 <= GridManager.Instance.GridWidth - 1) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column + 1, row]);
+                        else StartCoroutine(trembleAnim());
+                    }
+                    swipeSessionStarted = false;
+
+                }
+                if (Mathf.Abs(touchDragPos.x - touchStartPos.x) < maxAxeDeviation)
+                {
 
 
-    ///DESCTOP PROPERTY
-    //private void OnMouseDrag()
-    //{
-    //    if (!GridManager.Instance.isSwiping && swipeSessionStarted && !GridManager.Instance.isSwipingBack && !GridManager.Instance.tilesAreMoving 
-    //        && !GameManager.instance.getFightIsOn() && !GridManager.Instance.GatherTilesAreMovingToShips)
-    //    {
-    //        touchDragPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
-    //        if ((touchDragPos - touchStartPos).magnitude > maxSwipeDistance)
-    //        {
-    //            if (Mathf.Abs(touchDragPos.y - touchStartPos.y) < maxAxeDeviation)
-    //            {
-    //                if (touchDragPos.x < touchStartPos.x)
-    //                {
-    //                    //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x - GridManager.Instance.Distance),Position.y), Position);
+                    if (touchDragPos.y < touchStartPos.y)
+                    {
+                        //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y - GridManager.Instance.Distance)), Position);
 
-    //                    if (column - 1 >= 0) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column - 1, row]);
-    //                    else StartCoroutine(trembleAnim());
-
-    //                }
-    //                if (touchDragPos.x > touchStartPos.x)
-    //                {
-    //                    //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x + GridManager.Instance.Distance), Position.y), Position);
-
-    //                    if (column + 1 <= GridManager.Instance.GridWidth - 1) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column + 1, row]);
-    //                    else StartCoroutine(trembleAnim());
-    //                }
-    //                swipeSessionStarted = false;
-
-    //            }
-    //            if (Mathf.Abs(touchDragPos.x - touchStartPos.x) < maxAxeDeviation)
-    //            {
+                        if (row - 1 >= 0) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column, row - 1]);
+                        else StartCoroutine(trembleAnim());
+                    }
+                    if (touchDragPos.y > touchStartPos.y)
+                    {
+                        //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y + GridManager.Instance.Distance)), Position);
 
 
-    //                if (touchDragPos.y < touchStartPos.y)
-    //                {
-    //                    //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y - GridManager.Instance.Distance)), Position);
-
-    //                    if (row - 1 >= 0) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column, row - 1]);
-    //                    else StartCoroutine(trembleAnim());
-    //                }
-    //                if (touchDragPos.y > touchStartPos.y)
-    //                {
-    //                    //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y + GridManager.Instance.Distance)), Position);
-
-
-    //                    if (row + 1 <= GridManager.Instance.GridHeight - 1) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column, row + 1]);
-    //                    else StartCoroutine(trembleAnim());
-    //                }
-    //                swipeSessionStarted = false;
-    //            }
-    //        }
-    //    }
-    //}
+                        if (row + 1 <= GridManager.Instance.GridHeight - 1) GridManager.Instance.swipeAnimation(this, GridManager.Instance.Grid[column, row + 1]);
+                        else StartCoroutine(trembleAnim());
+                    }
+                    swipeSessionStarted = false;
+                }
+            }
+        }
+    }
 
     public void moveTo()
     {

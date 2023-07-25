@@ -28,6 +28,8 @@ public class Shot : MonoBehaviour
     [NonSerialized]
     public Vector2 contactPointOfCollider;
 
+    private float XBorder;
+
     private void Awake()
     {
         //_trailRenderer = gameObject.GetComponent<TrailRenderer>();
@@ -82,7 +84,7 @@ public class Shot : MonoBehaviour
     void Update()
     {
         if (_shotTransform.position.y > CommonData.Instance.vertScreenSize / 2 + 1 || _shotTransform.position.y < -2 
-            || _shotTransform.position.x < CommonData.Instance.horisScreenSize / -2 - 1 || _shotTransform.position.x > CommonData.Instance.horisScreenSize / 2 + 1)
+            || _shotTransform.position.x < -CommonData.Instance.getXBorder() || _shotTransform.position.x > CommonData.Instance.getXBorder())
         {
             disactivateShot(false);
         }

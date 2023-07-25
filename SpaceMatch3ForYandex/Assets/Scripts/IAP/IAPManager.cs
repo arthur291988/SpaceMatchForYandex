@@ -1,29 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class IAPManager : MonoBehaviour
 {
     public static IAPManager instance;
 
+    [DllImport("__Internal")]
+    private static extern void BuyNoAds();
+
+    [DllImport("__Internal")]
+    private static extern void CheckNoAds();
+
+
+    [DllImport("__Internal")]
+    private static extern void BuyNoAdsSpecial();
+
+    [DllImport("__Internal")]
+    private static extern void CheckNoAdsSpecial();
+
+
     private void Awake()
     {
-        instance = this;
+        instance = this; 
+        //CheckNoAds();
+        //CheckNoAdsSpecial();
     }
 
-    public void buyNoAdsSpecial() {
-        GameParams.setAdsBought(true);
-        SaveAndLoad.instance.savePurchases();
-        ShopWhileBattle.instance.updateNoAdsSpecialUIAfterPurchase();
-
-        //AnalyticMain.instance.LogEvent("NoAdsSpecialBought");
-
+    public void buyNoAdsButtonSpecial() {
+        BuyNoAdsSpecial();
     }
-    public void buyNoAdsFromMenu()
+    public void buyNoAdsSpecialResult()
     {
         GameParams.setAdsBought(true);
-        SaveAndLoad.instance.savePurchases();
+        SaveAndLoad.instance.saveData();
+        ShopWhileBattle.instance.updateNoAdsSpecialUIAfterPurchase();
+    }
+
+    public void buyNoAdsButtonFromMenu()
+    {
+        BuyNoAds();
+    }
+
+    public void buyNoAdsFromMenuResult()
+    {
+        GameParams.setAdsBought(true);
+        SaveAndLoad.instance.saveData();
         ShopManager.instance.updateNoAdsUIAfterPUrchase();
-        //AnalyticMain.instance.LogEvent("NoAdsBought");
     }
 }

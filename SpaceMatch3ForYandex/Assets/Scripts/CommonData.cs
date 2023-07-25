@@ -25,6 +25,7 @@ public class CommonData : MonoBehaviour
     private int gameLevel; //0-6
 
     private int levelHardness; //0-easey 1-medium 2-hard
+    private float xBorders;
 
     void Awake()
     {
@@ -62,6 +63,15 @@ public class CommonData : MonoBehaviour
         };
 
         heardnessListByLevel = new List<int> { 0, 0, 0, 1, 1, 2, 2 }; //index is key and value is heardness level 
+    }
+
+    private void Start()
+    {
+        xBorders = GameManager.instance.getScreenVerticalBorders();
+    }
+
+    public float getXBorder() {
+        return xBorders;
     }
 
     public void setGameLevelAndHardness(int value) {

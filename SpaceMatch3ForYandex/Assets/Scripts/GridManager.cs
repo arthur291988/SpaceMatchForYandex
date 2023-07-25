@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -56,7 +57,8 @@ public class GridManager : MonoBehaviour
     public bool tilesAreMoving; //this one monitors movin of whole session of tile moves from player swipe to attack
     [NonSerialized]
     public bool GatherTilesAreMovingToShips;
-    private bool shipsPrepareToAttack; //this one is used to prevent the bug of moving the tiles after resource gather process has finished but ships haven't started attack yet
+    [NonSerialized]
+    public bool shipsPrepareToAttack; //this one is used to prevent the bug of moving the tiles after resource gather process has finished but ships haven't started attack yet
 
     //private bool controlTileIsAssigned; //is used to assign if first moving tile is assigned as control, this tile will return the sygnal back to this class from Tile class that tiles have finished the movement
     private bool swipeMatch; // is used to identify if the match occured after player swipe not after combo match;
@@ -88,12 +90,12 @@ public class GridManager : MonoBehaviour
 
 
     //touch process properties for MOBILE PLATFORM
-    private bool swipeSessionStarted;
-    private Vector2 touchStartPos;
-    private Vector2 touchDragPos;
-    private const float maxSwipeDistance = 0.4f; //0.9f
-    private const float maxAxeDeviation = 0.3f; //0.4f
-    private Tile tileUnderTouch;
+    //private bool swipeSessionStarted;
+    //private Vector2 touchStartPos;
+    //private Vector2 touchDragPos;
+    //private const float maxSwipeDistance = 0.4f; //0.9f
+    //private const float maxAxeDeviation = 0.3f; //0.4f
+    //private Tile tileUnderTouch;
 
 
     //[SerializeField]
@@ -129,7 +131,7 @@ public class GridManager : MonoBehaviour
         InitGrid();
         isSwiping = false;
         isSwipingBack = false;
-        swipeSessionStarted = false;
+        //swipeSessionStarted = false;
         tilesMovingDown = false;
     }
 
@@ -899,29 +901,31 @@ public class GridManager : MonoBehaviour
         EnemyFleetManager.instance.checkActionsOfFleet();
     }
 
+    //MOBILE PLATFORM
+    //private Tile getTileUnderTouch(Vector2 pos)
+    //{
+    //    Vector2 worldPosition = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
+    //    Tile tile;
 
-    private Tile getTileUnderTouch(Vector2 pos)
-    {
-        Vector2 worldPosition = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
-        Tile tile;
+    //    for (int row = 0; row < GridHeight; row++)
+    //    {
+    //        for (int column = 0; column < GridWidth; column++) // 2
+    //        {
+    //            tile = Grid[row, column];
+    //            if (worldPosition.x < (tile.Position.x + tile._spriteRenderer.bounds.size.x / 2) &&
+    //            worldPosition.x > (tile.Position.x - tile._spriteRenderer.bounds.size.x / 2) &&
+    //            worldPosition.y < (tile.Position.y + tile._spriteRenderer.bounds.size.y / 2) &&
+    //            worldPosition.y > (tile.Position.y - tile._spriteRenderer.bounds.size.y / 2))
+    //            {
+    //                return tile;
+    //            }
+    //        }
+    //    }
 
-        for (int row = 0; row < GridHeight; row++)
-        {
-            for (int column = 0; column < GridWidth; column++) // 2
-            {
-                tile = Grid[row, column];
-                if (worldPosition.x < (tile.Position.x + tile._spriteRenderer.bounds.size.x / 2) &&
-                worldPosition.x > (tile.Position.x - tile._spriteRenderer.bounds.size.x / 2) &&
-                worldPosition.y < (tile.Position.y + tile._spriteRenderer.bounds.size.y / 2) &&
-                worldPosition.y > (tile.Position.y - tile._spriteRenderer.bounds.size.y / 2))
-                {
-                    return tile;
-                }
-            }
-        }
+    //    return null;
+    //}
 
-        return null;
-    }
+
 
 
     private void Update()
@@ -946,96 +950,99 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        //touch process for Android platform
-        if (Input.touchCount == 1)
-        {
-            Touch _touch = Input.GetTouch(0);
 
-            if (_touch.phase == TouchPhase.Began)
-            {
-                if (tileUnderTouch == null && getTileUnderTouch(_touch.position) != null)
-                {
-                    touchStartPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
-                    swipeSessionStarted = true;
-                    tileUnderTouch = getTileUnderTouch(_touch.position);
-                }
+        
 
+        ////touch process for Android platform
+        //if (Input.touchCount == 1)
+        //{
+        //    Touch _touch = Input.GetTouch(0);
 
-                //promoPointer.SetActive(true);
-                //promoPointerTransform.position = touchStartPos;
-            }
-            if (!isSwiping && swipeSessionStarted && !isSwipingBack && !tilesAreMoving && !GameManager.instance.getFightIsOn() && !GatherTilesAreMovingToShips && !shipsPrepareToAttack)
-            {
-                if (_touch.phase == TouchPhase.Moved)
-                {
-                    touchDragPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
-                    if ((touchDragPos - touchStartPos).magnitude > maxSwipeDistance)
-                    {
-                        if (Mathf.Abs(touchDragPos.y - touchStartPos.y) < maxAxeDeviation)
-                        {
-                            if (touchDragPos.x < touchStartPos.x)
-                            {
-                                //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x - GridManager.Instance.Distance),Position.y), Position);
-
-                                if (tileUnderTouch.column - 1 >= 0) swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column - 1, tileUnderTouch.row]);
-                                else tileUnderTouch.trembelAnimFunc();
-
-                            }
-                            if (touchDragPos.x > touchStartPos.x)
-                            {
-                                //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x + GridManager.Instance.Distance), Position.y), Position);
-
-                                if (tileUnderTouch.column + 1 <= GridWidth - 1) swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column + 1, tileUnderTouch.row]);
-                                else tileUnderTouch.trembelAnimFunc();
-                            }
-                            swipeSessionStarted = false;
-                            tileUnderTouch = null;
-
-                        }
-                        if (Mathf.Abs(touchDragPos.x - touchStartPos.x) < maxAxeDeviation)
-                        {
+        //    if (_touch.phase == TouchPhase.Began)
+        //    {
+        //        if (tileUnderTouch == null && getTileUnderTouch(_touch.position) != null)
+        //        {
+        //            touchStartPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
+        //            swipeSessionStarted = true;
+        //            tileUnderTouch = getTileUnderTouch(_touch.position);
+        //        }
 
 
-                            if (touchDragPos.y < touchStartPos.y)
-                            {
-                                //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y - GridManager.Instance.Distance)), Position);
+        //        //promoPointer.SetActive(true);
+        //        //promoPointerTransform.position = touchStartPos;
+        //    }
+        //    if (!isSwiping && swipeSessionStarted && !isSwipingBack && !tilesAreMoving && !GameManager.instance.getFightIsOn() && !GatherTilesAreMovingToShips && !shipsPrepareToAttack)
+        //    {
+        //        if (_touch.phase == TouchPhase.Moved)
+        //        {
+        //            touchDragPos = CommonData.Instance._camera.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
+        //            if ((touchDragPos - touchStartPos).magnitude > maxSwipeDistance)
+        //            {
+        //                if (Mathf.Abs(touchDragPos.y - touchStartPos.y) < maxAxeDeviation)
+        //                {
+        //                    if (touchDragPos.x < touchStartPos.x)
+        //                    {
+        //                        //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x - GridManager.Instance.Distance),Position.y), Position);
 
-                                if (tileUnderTouch.row - 1 >= 0) swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column, tileUnderTouch.row - 1]);
-                                else tileUnderTouch.trembelAnimFunc();
-                            }
-                            if (touchDragPos.y > touchStartPos.y)
-                            {
-                                //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y + GridManager.Instance.Distance)), Position);
+        //                        if (tileUnderTouch.column - 1 >= 0) swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column - 1, tileUnderTouch.row]);
+        //                        else tileUnderTouch.trembelAnimFunc();
+
+        //                    }
+        //                    if (touchDragPos.x > touchStartPos.x)
+        //                    {
+        //                        //GridManager.Instance.SwapTiles(new Vector2Int((int)(Position.x + GridManager.Instance.Distance), Position.y), Position);
+
+        //                        if (tileUnderTouch.column + 1 <= GridWidth - 1) swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column + 1, tileUnderTouch.row]);
+        //                        else tileUnderTouch.trembelAnimFunc();
+        //                    }
+        //                    swipeSessionStarted = false;
+        //                    tileUnderTouch = null;
+
+        //                }
+        //                if (Mathf.Abs(touchDragPos.x - touchStartPos.x) < maxAxeDeviation)
+        //                {
 
 
-                                if (tileUnderTouch.row + 1 <= GridHeight - 1)swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column, tileUnderTouch.row + 1]);
-                                else tileUnderTouch.trembelAnimFunc();
-                            }
-                            swipeSessionStarted = false;
-                            tileUnderTouch = null;
-                        }
-                    }
+        //                    if (touchDragPos.y < touchStartPos.y)
+        //                    {
+        //                        //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y - GridManager.Instance.Distance)), Position);
+
+        //                        if (tileUnderTouch.row - 1 >= 0) swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column, tileUnderTouch.row - 1]);
+        //                        else tileUnderTouch.trembelAnimFunc();
+        //                    }
+        //                    if (touchDragPos.y > touchStartPos.y)
+        //                    {
+        //                        //GridManager.Instance.SwapTiles(new Vector2Int(Position.x, (int)(Position.y + GridManager.Instance.Distance)), Position);
 
 
-                    //promoPointerTransform.position = touchDragPos;
-                }
-                else if (_touch.phase == TouchPhase.Ended)
-                {
-                    tileUnderTouch = null;
-                    swipeSessionStarted = false;
-                }
-            }
+        //                        if (tileUnderTouch.row + 1 <= GridHeight - 1)swipeAnimation(tileUnderTouch, Grid[tileUnderTouch.column, tileUnderTouch.row + 1]);
+        //                        else tileUnderTouch.trembelAnimFunc();
+        //                    }
+        //                    swipeSessionStarted = false;
+        //                    tileUnderTouch = null;
+        //                }
+        //            }
 
-            //if (_touch.phase == TouchPhase.Ended)
-            //{
-            //    promoPointer.SetActive(false);
-            //}
-        }
-        else if (Input.touchCount > 1)
-        {
-            tileUnderTouch = null;
-            swipeSessionStarted = false;
-        }
+
+        //            //promoPointerTransform.position = touchDragPos;
+        //        }
+        //        else if (_touch.phase == TouchPhase.Ended)
+        //        {
+        //            tileUnderTouch = null;
+        //            swipeSessionStarted = false;
+        //        }
+        //    }
+
+        //    //if (_touch.phase == TouchPhase.Ended)
+        //    //{
+        //    //    promoPointer.SetActive(false);
+        //    //}
+        //}
+        //else if (Input.touchCount > 1)
+        //{
+        //    tileUnderTouch = null;
+        //    swipeSessionStarted = false;
+        //}
 
         
     }

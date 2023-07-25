@@ -81,7 +81,7 @@ public class Asteroid : MonoBehaviour
         _transform.Translate(moveDir.normalized * speed * Time.deltaTime, Space.World);
         _transform.Rotate(rotation * Time.deltaTime, Space.World);
 
-        if (_transform.position.x > CommonData.Instance.horisScreenSize / 2 + 1) {
+        if (_transform.position.x > CommonData.Instance.getXBorder()) {
             disactivateAsteroid(false); ;
         }
     }

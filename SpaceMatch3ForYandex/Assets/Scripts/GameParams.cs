@@ -10,6 +10,8 @@ public class GameParams
     public static int language;
 
     public static bool storyWatched;
+    public static bool gameRated;
+    public static bool gameWin;
 
 
     private static string levelWord;
@@ -236,6 +238,7 @@ public class GameParams
 
     public static void setAdsBought(bool state) {
         adsOff = state;
+        SaveAndLoad.instance.playerData.adsOff = state;
     }
 
     public static bool getAdsBought() {

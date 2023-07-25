@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -64,7 +66,39 @@ public class MenuManager : MonoBehaviour
 
         setLevelparameters();
 
-        if (Random.Range(0,4)==3) showRateUsPanel();
+        checkTheInternet();
+    }
+
+
+    [DllImport("__Internal")]
+    private static extern void RateGame();
+
+    public void checkTheInternet()
+    {
+        StartCoroutine(checkInternetConnection((isConnected) => {
+            if (isConnected)
+            {
+                if (GameParams.gameWin && !GameParams.gameRated) showRateUsPanel();
+            }
+            //else
+            //{
+            //}
+        }));
+    }
+
+    IEnumerator checkInternetConnection(Action<bool> action)
+    {
+        WWW www = new WWW("http://google.com");
+        yield return www;
+        if (www.error != null)
+        {
+            action(false);
+        }
+        else
+        {
+            action(true);
+        }
+
     }
 
     private IEnumerator TypeAssistantText()
@@ -231,9 +265,19 @@ public class MenuManager : MonoBehaviour
 
     public void rateUsButton()
     {
-        Application.OpenURL("https://play.google.com/store/apps/details?id=com.ArtUR.SpaceMatch3");
 
+        RateGame();
         AudioManager.Instance.connectionVoice();
+
+    }
+
+    //is called from my.jlib plugin of yandex after rateus button pushed
+    public void rateUsResult()
+    {
+        GameParams.gameRated = true;
+        SaveAndLoad.instance.playerData.gameRated = true;
+        SaveAndLoad.instance.saveData();
+        hideRateUsPanel();
     }
 
     private void showRateUsPanel() {
@@ -246,16 +290,18 @@ public class MenuManager : MonoBehaviour
         AudioManager.Instance.connectionVoice();
     }
 
+
     private void Update()
     {
         //touch process for Android platform
         if (assistantIsTalking || alienIsTalking)
-        { 
-            if (Input.touchCount == 1)
-            {
-                Touch _touch = Input.GetTouch(0);
+        {
 
-                if (_touch.phase == TouchPhase.Began && _camera.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0)).y< vertScreenSize/2-2.5f)
+            //DESCTOP PLATFORM
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector3 mousePosition = Input.mousePosition; 
+                if (_camera.ScreenToWorldPoint(mousePosition).y < vertScreenSize / 2 - 2.5f)
                 {
                     if (alienIsTalking)
                     {
@@ -273,6 +319,32 @@ public class MenuManager : MonoBehaviour
                     AudioManager.Instance.connectionVoice();
                 }
             }
+
+
+
+            //MOBILE PLATFORM
+            //if (Input.touchCount == 1)
+            //{
+            //    Touch _touch = Input.GetTouch(0);
+
+            //    if (_touch.phase == TouchPhase.Began && _camera.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0)).y< vertScreenSize/2-2.5f)
+            //    {
+            //        if (alienIsTalking)
+            //        {
+            //            StopAllCoroutines();
+            //            characterText.text = GameParams.getAlienTextList()[GameParams.currentLevel];
+            //            stopAlienTalking();
+            //        }
+            //        else if (assistantIsTalking)
+            //        {
+            //            StopAllCoroutines();
+            //            characterText.text = GameParams.getAssistantTextList()[GameParams.currentLevel];
+            //            stopAssistantTalking();
+
+            //        }
+            //        AudioManager.Instance.connectionVoice();
+            //    }
+            //}
         }
         
     }

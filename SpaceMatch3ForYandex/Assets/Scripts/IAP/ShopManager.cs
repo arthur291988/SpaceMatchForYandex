@@ -63,7 +63,7 @@ public class ShopManager : MonoBehaviour
             priceOfNOAds.color = Color.green;
             buyNoAdsButton.interactable = false;    
         }
-        else StartCoroutine(setStorePrice());
+        //else StartCoroutine(setStorePrice());
     }
 
     public void updateNoAdsUIAfterPUrchase()
@@ -73,14 +73,14 @@ public class ShopManager : MonoBehaviour
         buyNoAdsButton.interactable = false;
     }
 
-    IEnumerator setStorePrice ()  {
-        //while (!IAPManagerOfGame.instance.IsInitialized()) {
-        //    yield return null;
-        //}
-        yield return null;
+    //IEnumerator setStorePrice ()  {
+    //    //while (!IAPManagerOfGame.instance.IsInitialized()) {
+    //    //    yield return null;
+    //    //}
+    //    yield return null;
 
-        //priceOfNOAds.text = IAPManagerOfGame.instance.getProductPriceFromStore(IAPManagerOfGame.instance.NO_ADS);
-    }
+    //    //priceOfNOAds.text = IAPManagerOfGame.instance.getProductPriceFromStore(IAPManagerOfGame.instance.NO_ADS);
+    //}
 
 
     private void Update()

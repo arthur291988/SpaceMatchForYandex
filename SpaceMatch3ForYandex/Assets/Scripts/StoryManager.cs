@@ -82,7 +82,8 @@ public class StoryManager : MonoBehaviour
 
     public void goToMenu() {
         GameParams.storyWatched = true;
-        SaveAndLoad.instance.saveStoryWatched();
+        SaveAndLoad.instance.playerData.storyWatched = true;
+        SaveAndLoad.instance.saveData();
         AudioManager.Instance.connectionVoice();
         SceneSwitchManager.LoadMenuScene();
         //AnalyticMain.instance.LogEvent("Story_Finished");
@@ -94,25 +95,45 @@ public class StoryManager : MonoBehaviour
         //touch process for Android platform
         if (storyTextFinished)
         {
-            if (Input.touchCount == 1)
+
+            //DESCTOP PLATFORM
+            if (Input.GetMouseButtonDown(0))
             {
-                Touch _touch = Input.GetTouch(0);
-                if (_touch.phase == TouchPhase.Began)
-                {
-                    nextPicture();
-                }
+                nextPicture();
             }
+
+
+
+
+            //MOBILE PLATFORM
+            //if (Input.touchCount == 1)
+            //{
+            //    Touch _touch = Input.GetTouch(0);
+            //    if (_touch.phase == TouchPhase.Began)
+            //    {
+            //        nextPicture();
+            //    }
+            //}
         }
         else
         {
-            if (Input.touchCount == 1)
+
+            //DESCTOP PLATFORM
+            if (Input.GetMouseButtonDown(0))
             {
-                Touch _touch = Input.GetTouch(0);
-                if (_touch.phase == TouchPhase.Began)
-                {
-                    fillTheText();
-                }
+                fillTheText();
             }
+
+
+            //MOBILE PLATFORM
+            //if (Input.touchCount == 1)
+            //{
+            //    Touch _touch = Input.GetTouch(0);
+            //    if (_touch.phase == TouchPhase.Began)
+            //    {
+            //        fillTheText();
+            //    }
+            //}
         }
     }
 }
