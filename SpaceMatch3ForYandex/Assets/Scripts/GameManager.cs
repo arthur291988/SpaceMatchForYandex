@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
     //private bool adsTimerIsOn;
     private bool adsReadyToShow;
 
-    private const float adsTimer = 70;
+    private const float adsTimer = 80;
 
 
     private void Awake()
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         //turnTimeDown = 0;
         //setTheTimer();
         GameParams.ResetAdsTimer();
-        checkTheInternet();
+        //checkTheInternet();
         GameParams.gameWin = false;
     }
 
@@ -130,47 +130,47 @@ public class GameManager : MonoBehaviour
         return Xborder;
     }
 
-    private void OnApplicationFocus(bool focus)
-    {
-        checkTheInternet();
-        GameParams.SetAdsTimer(60);
+    //private void OnApplicationFocus(bool focus)
+    //{
+    //    //checkTheInternet();
+    //    GameParams.SetAdsTimer(60);
 
-        //if (!Advertisement.isInitialized)
-        //{
-        //    AdsInitializer.Instance.InitializeAds();
-        //    GameParams.SetAdsTimer(60);
-        //}
-    }
+    //    //if (!Advertisement.isInitialized)
+    //    //{
+    //    //    AdsInitializer.Instance.InitializeAds();
+    //    //    GameParams.SetAdsTimer(60);
+    //    //}
+    //}
 
-    public void checkTheInternet() {
-        StartCoroutine(checkInternetConnection((isConnected) => {
-            if (isConnected)
-            {
-                if (noInternetPanel.activeInHierarchy) noInternetPanel.SetActive(false);
-                //if (!GameParams.getAdsBought())setAdsTimer(true);
-            }
-            else
-            {
-                noInternetPanel.SetActive(true);
-                //setAdsTimer(false);
-            }
-        }));
-    }
+    //public void checkTheInternet() {
+    //    StartCoroutine(checkInternetConnection((isConnected) => {
+    //        if (isConnected)
+    //        {
+    //            if (noInternetPanel.activeInHierarchy) noInternetPanel.SetActive(false);
+    //            //if (!GameParams.getAdsBought())setAdsTimer(true);
+    //        }
+    //        else
+    //        {
+    //            noInternetPanel.SetActive(true);
+    //            //setAdsTimer(false);
+    //        }
+    //    }));
+    //}
 
-    IEnumerator checkInternetConnection(Action<bool> action)
-    {
-        WWW www = new WWW("http://google.com");
-        yield return www;
-        if (www.error != null)
-        {
-            action(false);
-        }
-        else
-        {
-            action(true);
-        }
+    //IEnumerator checkInternetConnection(Action<bool> action)
+    //{
+    //    WWW www = new WWW("http://google.com");
+    //    yield return www;
+    //    if (www.error != null)
+    //    {
+    //        action(false);
+    //    }
+    //    else
+    //    {
+    //        action(true);
+    //    }
 
-    }
+    //}
 
     //public void setAdsTimer(bool on) => adsTimerIsOn= on;
 

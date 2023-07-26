@@ -23,9 +23,9 @@ public class IAPManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this; 
-        //CheckNoAds();
-        //CheckNoAdsSpecial();
+        instance = this;
+        CheckNoAds();
+        CheckNoAdsSpecial();
     }
 
     public void buyNoAdsButtonSpecial() {

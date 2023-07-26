@@ -65,41 +65,41 @@ public class MenuManager : MonoBehaviour
         StartWord.text = GameParams.getStartWord();
 
         setLevelparameters();
-
-        checkTheInternet();
+        if (GameParams.gameWin && !GameParams.gameRated) showRateUsPanel();
+        //checkTheInternet();
     }
 
 
     [DllImport("__Internal")]
     private static extern void RateGame();
 
-    public void checkTheInternet()
-    {
-        StartCoroutine(checkInternetConnection((isConnected) => {
-            if (isConnected)
-            {
-                if (GameParams.gameWin && !GameParams.gameRated) showRateUsPanel();
-            }
-            //else
-            //{
-            //}
-        }));
-    }
+    //public void checkTheInternet()
+    //{
+    //    StartCoroutine(checkInternetConnection((isConnected) => {
+    //        if (isConnected)
+    //        {
+    //            if (GameParams.gameWin && !GameParams.gameRated) showRateUsPanel();
+    //        }
+    //        //else
+    //        //{
+    //        //}
+    //    }));
+    //}
 
-    IEnumerator checkInternetConnection(Action<bool> action)
-    {
-        WWW www = new WWW("http://google.com");
-        yield return www;
-        if (www.error != null)
-        {
-            action(false);
-        }
-        else
-        {
-            action(true);
-        }
+    //IEnumerator checkInternetConnection(Action<bool> action)
+    //{
+    //    WWW www = new WWW("http://google.com");
+    //    yield return www;
+    //    if (www.error != null)
+    //    {
+    //        action(false);
+    //    }
+    //    else
+    //    {
+    //        action(true);
+    //    }
 
-    }
+    //}
 
     private IEnumerator TypeAssistantText()
     {
